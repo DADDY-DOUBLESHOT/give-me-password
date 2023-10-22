@@ -55,18 +55,18 @@ const crypto = require("crypto");
 function generateHash(input) {
   const hash = crypto.createHash("sha256");
   hash.update(input);
-  return hash.digest("hex");
+  return hash.digest("base64").slice(0, 24);
 }
 
-const cache = new Map();
+// const cache = new Map();
 
 export function encodeString(input) {
-  if (cache.has(input)) {
-    return cache.get(input);
-  }
+  // if (cache.has(input)) {
+  //   return cache.get(input);
+  // }
 
   const hash = generateHash(input);
-  cache.set(input, hash);
+  // cache.set(input, hash);
 
   return hash;
 }

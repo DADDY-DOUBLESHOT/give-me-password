@@ -1,17 +1,19 @@
 import { server } from "@/utils/constants";
 import axios from "axios";
 import Head from "next/head";
+import { useRouter } from "next/router";
 import { useState } from "react";
 
 export default function Home() {
   const [loader, setLoader] = useState(false);
   const [show, setShow] = useState(false);
   const [code, setCode] = useState("");
+  const router = useRouter();
 
   const handleSubmit = async () => {
     setLoader(true);
     let temp = code;
-    await setCode("");
+    setCode("");
     await generateCode(temp);
   };
 
@@ -24,6 +26,8 @@ export default function Home() {
       copy_btn.classList.remove("fa-solid");
       copy_btn.classList.add("fa-regular");
     }, 2000);
+
+    router.push("/encoded-password");
   };
 
   const handleCodeShow = () => {
@@ -33,9 +37,9 @@ export default function Home() {
     }, 15000);
   };
 
-  const generateCode = async () => {
+  const generateCode = async (temp) => {
     await axios
-      .get(`${server}/api/getcode/${code}`)
+      .get(`${server}/getcode/${temp}`)
       .then((res) => {
         setCode(res.data.passcode);
       })
